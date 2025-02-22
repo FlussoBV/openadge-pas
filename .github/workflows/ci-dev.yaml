@@ -38,6 +38,10 @@ jobs:
         run: |
           docker build -f Dockerfile-dev -t ${{ env.PAS_IMAGE }} .
         
+      - name: Get progress.cfg
+        run: |
+          echo "${{ secrets[format('PROGRESS_CFG_{0}', env.FLATVERSION)] }}" | base64 --decode > progress.cfg
+
       - name: Start test container
         uses: ./.github/actions/start-container
         with:
