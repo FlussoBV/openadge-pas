@@ -1,0 +1,36 @@
+name: 'Start test container'
+description: 'Start test container'
+inputs: 
+  pasimage:
+    description: 'OpenEdge PAS image to start'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: start container
+      shell: bash
+      run: |
+        docker run \
+          -d \
+          --name pas \
+          -v ./src:/app/src \
+          -v ./progress.cfg:/usr/dlc/progress.cfg \
+          -p 8810:8810 \
+          --env PASWEBHANDLERS=/app/src/ROOT.handlers \
+          ${{ inputs.pasimage }} \
+          /app/pas/start.sh
+        echo starting PAS...
+
+    # Wait for PAS to start, shorter times give issues with PAS not being ready
+    - name: Wait 20 seconds
+      uses: GuillaumeFalourd/wait-sleep-action@175a644657d8de245e4c6059d014941646186a84  # v1
+      with:
+        time: '20'
+    
+    - name: Check PAS status
+      shell: bash
+      run: |
+        docker ps
+        docker logs pas
+        

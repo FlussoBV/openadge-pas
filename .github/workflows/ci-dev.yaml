@@ -29,10 +29,17 @@ jobs:
         with:
           version: ${{ matrix.version }}
           dockerfile: Dockerfile-dev
-            
+      
+      - name: compose image name
+        run: |
+          echo "PAS_IMAGE=openedge-pas:${{env.OPENEDGE_VERSION}}" >> $GITHUB_ENV
+
       - name: Build docker image
         run: |
-          docker build -f Dockerfile-dev -t openedge-pas:${{env.OPENEDGE_VERSION}} .
+          docker build -f Dockerfile-dev -t ${{ env.PAS_IMAGE }} .
         
-    
+      - name: Start test container
+        uses: ./.github/actions/start-container
+        with:
+          pasimage: ${{ env.PAS_IMAGE }}
     
