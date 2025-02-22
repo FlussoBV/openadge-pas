@@ -1,0 +1,30 @@
+name: 'Setup OpenEdge'
+description: 'Setup OpenEdge environment'
+inputs:
+  version:
+    description: 'OpenEdge version'
+    required: true
+  dockerfile:
+    description: 'Dockerfile to use'
+    required: true
+    
+runs:
+  using: 'composite'
+  steps:
+    - name: Get OpenEdge version
+      id: get-oeversion
+      uses: bfv/openedge-flatversion@49ecdca1670447fcf715c0b505607ec17dc59b62  # v1.2.1
+      with:
+        version: ${{ inputs.version }}
+
+    - name: Version to env
+      shell: bash
+      run: |
+        echo "FLATVERSION=${{ steps.get-oeversion.outputs.flat-version }}" >> $GITHUB_ENV
+        echo "OPENEDGE_VERSION=${{ inputs.version }}" >> $GITHUB_ENV
+        echo "OPENEDGE_BASE_VERSION=${{ steps.get-oeversion.outputs.base-version }}" >> $GITHUB_ENV
+    
+    - name: Set OpenEdge version in Dockerfile
+      shell: bash
+      run: |
+        sed -i "s/OEVERSION/${{ inputs.version }}/g" ${{ inputs.dockerfile }}
