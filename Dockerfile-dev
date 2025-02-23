@@ -7,6 +7,7 @@ FROM devbfvio/openedge-common:OEVERSION
 RUN mkdir /app/pas && \
     mkdir /app/src && \
     mkdir /app/lib && \
+    mkdir /app/log && \
     mkdir /app/config && \
     mkdir /app/scripts
 
@@ -28,5 +29,6 @@ RUN touch /app/pas/pas.type.dev
 
 VOLUME /app/src
 VOLUME /app/lib
+VOLUME /app/log
 VOLUME /app/config
     
