@@ -7,7 +7,8 @@ FROM devbfvio/openedge-common:OEVERSION
 RUN mkdir /app/pas && \
     mkdir /app/src && \
     mkdir /app/lib && \
-    mkdir /app/config 
+    mkdir /app/config && \
+    mkdir /app/scripts
 
 RUN pasman create -p 8810 -P 8811 -j 8812 -s 8813 -Z dev -v -f -U openedge -G openedge -N pas /app/pas/as
 

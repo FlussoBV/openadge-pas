@@ -14,7 +14,8 @@ runs:
         docker run \
           -d \
           --name pas \
-          -v ./src:/app/src \
+          -v ./tests/4gl:/app/src \
+          -v ./tests/scripts:/app/scripts \
           -v ./progress.cfg:/usr/dlc/progress.cfg \
           -p 8810:8810 \
           --env PASWEBHANDLERS=/app/src/ROOT.handlers \
